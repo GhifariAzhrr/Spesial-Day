@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhifariAzhr | Spesial Day</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-align: center;
+      padding: 20px;
+      animation: gradientBG 15s ease infinite;
+    }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 30px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      animation: fadeIn 2s ease, glow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #fff, 0 0 10px #2c5364; }
+      to { text-shadow: 0 0 10px #fff, 0 0 20px #0f2027; }
+    }
+    
+    .dev-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .dev-card {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dev-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    
+    .dev-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    .dev-date {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 15px;
+    }
+    
+    .countdown {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .countdown-item {
+      display: inline-block;
+      margin: 0 5px;
+    }
+    
+    .countdown-number {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #fff;
+      display: block;
+    }
+    
+    .countdown-label {
+      font-size: 0.7em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.8;
+    }
+    
+    .view-button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 20px;
+      background: linear-gradient(45deg, #2c5364, #203a43);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    
+    .view-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+    }
+    
+    .birthday-active {
+      position: relative;
+    }
+    
+    .birthday-active::before {
+      content: "🎂 HARI INI! 🎂";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 215, 0, 0.8);
+      color: #000;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      z-index: 10;
+      animation: bounce 2s infinite alternate;
+    }
+    
+    @keyframes bounce {
+      from { transform: translate(-50%, 0); }
+      to { transform: translate(-50%, -5px); }
+    }
+    
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    
+    @keyframes fadeInUp {
+      from {transform: translateY(40px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+    
+    .footer {
+      margin-top: 40px;
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .countdown {
+        flex-direction: row;
+      }
+      
+      .countdown-item {
+        margin: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Spesial Day</h1>
+    
+    <div class="dev-list" id="devList">
+      <!-- Developer cards will be generated here -->
+    </div>
+    
+    <div class="footer">
+      &copy; 2025 GhifariAzhr | Allright
+    </div>
+  </div>
+
+  <script>
+    // Developer data
+    const developers = [
+      {
+        name: "GhifariAzhr",
+        birthDate: {
+          day: 8,
+          month: 7, // Agustus - 1 (because months are 0-indexed in JS)
+          fullDate: "07 Agustus"
+        },
+      },
+      {
+        name: "Maya Octaviani",
+        birthDate: {
+          day: 28,
+          month: 9, // Oktober - 1
+          fullDate: "27 Oktober"
+        },
+      },
+      {
+        name: "Tanggal Jadian",
+        birthDate: {
+          day: 24,
+          month: 3, // April - 1
+          fullDate: "23 April"
+        },
+      },
+    ];
+    
+    // Format angka dengan leading zero jika perlu
+    const formatNumber = (number) => {
+      return number < 10 ? `0${number}` : number;
+    };
+    
+    // Hitung waktu tersisa hingga ulang tahun
+    function getTimeRemaining(birthMonth, birthDay) {
+      const now = new Date();
+      let birthdayDate = new Date(now.getFullYear(), birthMonth, birthDay);
+      
+      // Jika ulang tahun sudah lewat tahun ini, atur ke tahun depan
+      if (now > birthdayDate) {
+        birthdayDate = new Date(now.getFullYear() + 1, birthMonth, birthDay);
+      }
+      
+      const diff = birthdayDate - now;
+      
+      // Jika hari ini adalah hari ulang tahun
+      if (diff >= 0 && diff < 86400000 && 
+          now.getDate() === birthDay && 
+          now.getMonth() === birthMonth) {
+        return {
+          isBirthday: true,
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0
+        };
+      }
+      
+      // Hitung sisa waktu
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      return {
+        isBirthday: false,
+        total: diff,
+        days,
+        hours,
+        minutes,
+        seconds
+      };
+    }
+    
+    // Buat kartu untuk setiap developer
+    function createDevCards() {
+      const devList = document.getElementById('devList');
+      devList.innerHTML = '';
+      
+      // Urutkan developer berdasarkan waktu ulang tahun terdekat
+      const sortedDevs = [...developers].sort((a, b) => {
+        const timeA = getTimeRemaining(a.birthDate.month, a.birthDate.day).total;
+        const timeB = getTimeRemaining(b.birthDate.month, b.birthDate.day).total;
+        return timeA - timeB;
+      });
+      
+      sortedDevs.forEach(dev => {
+        const time = getTimeRemaining(dev.birthDate.month, dev.birthDate.day);
+        
+        const devCard = document.createElement('div');
+        devCard.className = `dev-card ${time.isBirthday ? 'birthday-active' : ''}`;
+        
+        const nameElement = document.createElement('div');
+        nameElement.className = 'dev-name';
+        nameElement.textContent = dev.name;
+        
+        const dateElement = document.createElement('div');
+        dateElement.className = 'dev-date';
+        dateElement.textContent = `Tanggal: ${dev.birthDate.fullDate}`;
+        
+        const countdownElement = document.createElement('div');
+        countdownElement.className = 'countdown';
+        countdownElement.id = `countdown-${dev.name.toLowerCase()}`;
+        
+        if (time.isBirthday) {
+          countdownElement.innerHTML = `
+            <div style="font-size: 1.3rem; color: #ffcc00; font-weight: bold;">
+              🎉 SELAMAT ULANG TAHUN! 🎉
+            </div>
+          `;
+        } else {
+          countdownElement.innerHTML = `
+            <div class="countdown-item">
+              <span id="${dev.name.toLowerCase()}-days" class="countdown-number">${formatNumber(time.days)}</span>
+              <span class="countdown-label">Hari</span>
+            </div>
+            <div class="countdown-item">
+              <span id="${dev.name.toLowerCase()}-hours" class="countdown-number">${formatNumber(time.hours)}</span>
+              <span class="countdown-label">Jam</span>
+            </div>
+            <div class="countdown-item">
+              <span id="${dev.name.toLowerCase()}-minutes" class="countdown-number">${formatNumber(time.minutes)}</span>
+              <span class="countdown-label">Menit</span>
+            </div>
+            <div class="countdown-item">
+              <span id="${dev.name.toLowerCase()}-seconds" class="countdown-number">${formatNumber(time.seconds)}</span>
+              <span class="countdown-label">Detik</span>
+            </div>
+          `;
+        }
+        
+        const viewButton = document.createElement('a');
+        viewButton.className = 'view-button';
+        viewButton.href = dev.pageUrl;
+        viewButton.textContent = 'Lihat Detail';
+        
+        // Menambahkan elemen-elemen ke kartu
+        devCard.appendChild(nameElement);
+        devCard.appendChild(dateElement);
+        devCard.appendChild(countdownElement);
+        
+        
+        // Menambahkan kartu ke daftar
+        devList.appendChild(devCard);
+      });
+    }
+    
+    // Update countdown for each developer
+    function updateAllCountdowns() {
+      developers.forEach(dev => {
+        const time = getTimeRemaining(dev.birthDate.month, dev.birthDate.day);
+        
+        // Skip updating if it's birthday
+        if (time.isBirthday) return;
+        
+        const daysEl = document.getElementById(`${dev.name.toLowerCase()}-days`);
+        const hoursEl = document.getElementById(`${dev.name.toLowerCase()}-hours`);
+        const minutesEl = document.getElementById(`${dev.name.toLowerCase()}-minutes`);
+        const secondsEl = document.getElementById(`${dev.name.toLowerCase()}-seconds`);
+        
+        if (daysEl && hoursEl && minutesEl && secondsEl) {
+          daysEl.textContent = formatNumber(time.days);
+          hoursEl.textContent = formatNumber(time.hours);
+          minutesEl.textContent = formatNumber(time.minutes);
+          secondsEl.textContent = formatNumber(time.seconds);
+        }
+      });
+    }
+    
+    // Generate developer cards
+    createDevCards();
+    
+    // Update countdowns every second
+    setInterval(() => {
+      updateAllCountdowns();
+    }, 1000);
+  </script>
+</body>
+</html>
